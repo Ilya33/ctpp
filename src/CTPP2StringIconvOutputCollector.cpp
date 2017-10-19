@@ -85,7 +85,7 @@ INT_32 StringIconvOutputCollector::Collect(const void     * vData,
 	size_t iDstLength     = CTPP_ESCAPE_BUFFER_LEN;
 
 	char         aDstData[CTPP_ESCAPE_BUFFER_LEN];
-#if defined(linux) || defined(__APPLE__)
+#if defined(linux) || defined(__APPLE__) || defined(__OpenBSD__)
 	char       * aSrcData = (char *)vData;
 #else
 	const char * aSrcData = (const char *)vData;

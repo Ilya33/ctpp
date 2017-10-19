@@ -173,7 +173,7 @@ INT_32 FnIconv::Handler(CDT            * aArguments,
 	size_t iDstLength     = CTPP_ESCAPE_BUFFER_LEN;
 
 	char         aDstData[CTPP_ESCAPE_BUFFER_LEN];
-#if defined(linux) || defined(__APPLE__)
+#if defined(linux) || defined(__APPLE__) || defined(__OpenBSD__)
 	char       * aSrcData = (char *)sWhat.data();
 #else
 	const char * aSrcData = (const char *)sWhat.data();

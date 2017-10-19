@@ -134,7 +134,7 @@ typedef CCHAR_8                   * CCHAR_P;
 typedef UCCHAR_8                  * UCCHAR_P;
 
 
-#elif defined(__FreeBSD__) || defined(__APPLE__) /* Linux End, start of FreeBSD / Mac OS declarations */
+#elif defined(__FreeBSD__) || defined(__APPLE__) || defined(__OpenBSD__) /* Linux End, start of FreeBSD / Mac OS / OpenBSD declarations */
 
 /**
   @var typedef int16_t    INT_16
