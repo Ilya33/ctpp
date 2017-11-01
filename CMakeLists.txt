@@ -299,10 +299,6 @@ IF (${ICONV_SUPPORT} MATCHES "ON")
     ENDIF (ICONV_INCLUDE)
 ENDIF (${ICONV_SUPPORT} MATCHES "ON")
 
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    FIND_LIBRARY(WS2_32_LIBRARY NAMES ws2_32)
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-
 INCLUDE_DIRECTORIES(include)
 INCLUDE_DIRECTORIES(include/functions)
 
@@ -375,7 +371,6 @@ SET(LIBSRCS
             src/CTPP2StaticText.cpp
             src/CTPP2StreamOutputCollector.cpp
             src/CTPP2StringOutputCollector.cpp
-            src/CTPP2StringIconvOutputCollector.cpp
             src/CTPP2SyscallFactory.cpp
             src/CTPP2Util.cpp
             src/CTPP2VM.cpp
@@ -439,6 +434,12 @@ SET(LIBSRCS
             src/functions/FnXMLEscape.cpp
            )
 
+IF(${ICONV_SUPPORT} MATCHES "ON")
+SET(LIBSRCS ${LIBSRCS}
+            src/CTPP2StringIconvOutputCollector.cpp
+           )
+ENDIF(${ICONV_SUPPORT} MATCHES "ON")
+
 # ################################################################################
 # Lib binary
 #
@@ -454,7 +455,7 @@ IF(DEBUG_MODE MATCHES "ON")
     SET_TARGET_PROPERTIES(ctpp2 PROPERTIES LINK_FLAGS -Wl,-lgcov)
 ENDIF(DEBUG_MODE MATCHES "ON")
 
-TARGET_LINK_LIBRARIES(ctpp2 ${MD5_LIBRARY} ${ICONV_LIBRARY} ${WS2_32_LIBRARY})
+TARGET_LINK_LIBRARIES(ctpp2 ${MD5_LIBRARY} ${ICONV_LIBRARY})
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     SET_TARGET_PROPERTIES(ctpp2 PROPERTIES COMPILE_DEFINITIONS CTPP2_DLL)
@@ -704,7 +705,6 @@ INSTALL(FILES include/CDT.hpp
               include/CTPP2StaticText.hpp
               include/CTPP2StreamOutputCollector.hpp
               include/CTPP2StringBuffer.hpp
-              include/CTPP2StringIconvOutputCollector.hpp
               include/CTPP2StringOutputCollector.hpp
               include/CTPP2SymbolTable.hpp
               include/CTPP2Syntax.h
@@ -741,6 +741,12 @@ INSTALL(FILES include/CDT.hpp
         PERMISSIONS OWNER_READ OWNER_WRITE
                     GROUP_READ
                     WORLD_READ)
+
+IF(${ICONV_SUPPORT} MATCHES "ON")
+SET(LIBSRCS ${LIBSRCS}
+              include/CTPP2StringIconvOutputCollector.hpp
+           )
+ENDIF(${ICONV_SUPPORT} MATCHES "ON")
 
 IF("${CMAKE_SYSTEM_NAME}" MATCHES "Windows")
 

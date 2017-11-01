@@ -37,7 +37,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32__)
 	#define random()        rand()
 	#define INT_64(x)       (INT_64)(x)
 	#define srandomdev()    srand( (unsigned)time(NULL) );
@@ -51,7 +51,7 @@ namespace CTPP // C++ Template Engine
 //
 FnRandom::FnRandom()
 {
-#if defined(__FreeBSD__) || defined(_MSC_VER)
+#if defined(__FreeBSD__) || defined(_MSC_VER) || defined(__MINGW32__)
 	srandomdev();
 #else
 	srandom(time(NULL));

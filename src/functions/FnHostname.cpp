@@ -34,10 +34,17 @@
 #include "CTPP2Logger.hpp"
 #include "FnHostname.hpp"
 
-#ifdef _MSC_VER
-#include <Winsock2.h>
+#if defined(_MSC_VER) || defined(__MINGW32__)
+    #include <Windows.h>
+
+    INT_32 _gethostname(char *szHostname, int hostNameMax) {
+        DWORD size = hostNameMax;
+        bool r = GetComputerNameExA((COMPUTER_NAME_FORMAT)0, szHostname, &size);
+        return 1 - (int)r;
+    }
 #else
 #include <unistd.h>
+#define _gethostname(a, b) gethostname(a, b)
 #endif
 
 #ifndef HOST_NAME_MAX
@@ -54,7 +61,7 @@ FnHostname::FnHostname()
 {
 	CHAR_8 szHostname[HOST_NAME_MAX + 1];
 
-	INT_32 iRC = gethostname(szHostname, HOST_NAME_MAX);
+	INT_32 iRC = _gethostname(szHostname, HOST_NAME_MAX);
 
 	if (iRC == 0) { sHostName.assign(szHostname); }
 	else          { sHostName.assign("unknown");  }
